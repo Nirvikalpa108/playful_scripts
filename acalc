@@ -29,15 +29,10 @@ def calc(input):
                 print(answer)
             except:
                 print('please give me integers or floats, thank you!')    
-        if operator_input == '+':
-            # I want to make the above line accept an "or" with - and * 
-            calculate_result(operator_input)
-        elif operator_input == '-':
-            calculate_result(operator_input)
-        elif operator_input == '*':
-            calculate_result(operator_input)
-        elif operator_input == '/':
+        if operator_input == '/':
             calculate_division(operator_input)
+        elif operator_input:
+            calculate_result(operator_input)
         else:
             print('I can perform addition, subtraction, multiplication or division')
     else:
