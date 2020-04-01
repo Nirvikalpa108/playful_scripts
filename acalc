@@ -20,7 +20,7 @@ def calc(input):
                 print(answer)
             except:
                 print('please give me integers')
-        def calculate_division(operator_input):
+        def calculate_division_result(operator_input):
             try:
                 first_operand = float(input[0])
                 third_operand = float(input[2])
@@ -30,7 +30,7 @@ def calc(input):
             except:
                 print('please give me integers or floats, thank you!')    
         if operator_input == '/':
-            calculate_division(operator_input)
+            calculate_division_result(operator_input)
         elif operator_input:
             calculate_result(operator_input)
         else:
