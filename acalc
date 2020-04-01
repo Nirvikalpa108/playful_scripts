@@ -34,6 +34,7 @@ def calc(input):
         elif operator_input:
             calculate_result(operator_input)
         else:
+            # I just realised that it's impossible to enter this else block because of the elif above
             print('I can perform addition, subtraction, multiplication or division')
     else:
         print('Sorry, I don\'t understand! Why don\'t you try 2 + 2?')
