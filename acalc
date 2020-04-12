@@ -11,16 +11,7 @@ def calc(input):
         '*': operator.__mul__,
         '/': operator.__div__
         } 
-        def calculate_result(operator_input):
-            try:
-                first_operand = int(input[0])
-                third_operand = int(input[2])
-                apply_operator = operator_list[operator_input]
-                answer = apply_operator(first_operand, third_operand)
-                print(answer)
-            except:
-                print('please give me integers')
-        def calculate_division_result(operator_input):
+        if operator_input == '/':
             try:
                 first_operand = float(input[0])
                 third_operand = float(input[2])
@@ -28,16 +19,18 @@ def calc(input):
                 answer = apply_operator(first_operand, third_operand)
                 print(answer)
             except:
-                print('please give me integers or floats, thank you!')    
-        if operator_input == '/':
-            calculate_division_result(operator_input)
-        elif operator_input:
-            calculate_result(operator_input)
+                print('please give me integers or floats and a / operand! For example: 9 / 3') 
         else:
-            # I just realised that it's impossible to enter this else block because of the elif above
-            print('I can perform addition, subtraction, multiplication or division')
+            try:
+                first_operand = int(input[0])
+                third_operand = int(input[2])
+                apply_operator = operator_list[operator_input]
+                answer = apply_operator(first_operand, third_operand)
+                print(answer)
+            except:
+                print('please give me integers and a +, - or * operand! For example 2 * 2')
     else:
-        print('Sorry, I don\'t understand! Why don\'t you try 2 + 2?')
+        print('Sorry, I don\'t understand! Why don\'t you try 2 + 2?')  
 
 keep_running = True
 while keep_running:
