@@ -17,7 +17,6 @@ if len(sys.argv) == 2:
 else:
     print('please give me something like `anetecho 5000`')
 
-# accept programme name and port number arguments
-# start listening on that port
-# read the request
-# send a copy of that request to the client 
+# instructions:
+# terminal 1 $ ./anetecho 5000
+# terminal 2 $ nc localhost 5000
