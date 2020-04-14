@@ -15,7 +15,7 @@ if len(sys.argv) == 2:
         connection.sendall(data)
     connection.close()
 else:
-    print('please give me something like `anetechocalc 5000`')
+    print('please give me something like `./anetechocalc 5000`')
 
 # Pseudo code to add acalc to this:
 # Inside the while block
