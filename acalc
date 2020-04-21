@@ -1,5 +1,4 @@
 #! /usr/bin/python
-import sys
 import operator 
 
 def calc(input):
@@ -11,10 +10,12 @@ def calc(input):
         '*': operator.__mul__,
         '/': operator.__div__
         } 
+        # Is it worth writing a function which outputs float or int so that I can use one function and remove the following if/else statement?
         if operator_input == '/':
             try:
                 first_operand = float(input[0])
                 third_operand = float(input[2])
+                # if third_operand is 0, will not work - add error statement
                 apply_operator = operator_list[operator_input]
                 answer = apply_operator(first_operand, third_operand)
                 print(answer)
@@ -32,11 +33,11 @@ def calc(input):
     else:
         print('Sorry, I don\'t understand! Why don\'t you try 2 + 2?')  
 
-keep_running = True
-while keep_running:
+programme_running = True
+while programme_running:
     user_input = raw_input('calc ')
     if user_input == 'exit':
-        keep_running = False
+        programme_running = False
     else:
         input = user_input.split(' ')
         calc(input)
