@@ -1,0 +1,114 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Sets up an instance.  
+
+Parameters:
+  AMI:
+    Description: AMI for the instance
+    Type: AWS::EC2::Image::Id
+  VpcId:
+    Description: The VPC in which the instance will run
+    Type: AWS::EC2::VPC::Id
+  Subnet:
+    Description: The subnets where the instance can run
+    Type: AWS::EC2::Subnet::Id
+  KeyName:
+    Description: An ssh keypair to put on the instance
+    Type: AWS::EC2::KeyPair::KeyName
+  SSHAccessCidr:
+    Description: A CIDR from which SSH access to the instance is allowed
+    Type: String
+    AllowedPattern: ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}$
+    ConstraintDescription: Parameter should be a CIDR block e.g. "1.2.3.4/32"
+
+Resources:
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: security group
+      VpcId:
+        Ref: VpcId
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 5000
+        ToPort: 5000
+        CidrIp:
+          Ref: SSHAccessCidr
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp:
+          Ref: SSHAccessCidr
+      SecurityGroupEgress:      
+      - IpProtocol: tcp
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+      Tags:
+      - Key: App
+        Value: amina-winning
+
+  InstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - ec2.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: instance-ec2-access
+        PolicyDocument:
+          Statement:
+          - Effect: Allow
+            Resource: '*'
+            Action:
+            - ec2:DescribeInstances
+      Path: /
+
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+      - Ref: InstanceRole
+
+  Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId:
+        Ref: AMI
+      InstanceType: t3.nano
+      KeyName:
+        Ref: KeyName
+      IamInstanceProfile:
+        Ref: InstanceProfile
+      NetworkInterfaces:
+      - DeviceIndex: 0
+        AssociatePublicIpAddress: true
+        SubnetId:
+          Ref: Subnet
+        GroupSet:
+        - Ref: InstanceSecurityGroup
+      Tags:
+      - Key: Name
+        Value: amina-winning-instance
+      - Key: App
+        Value: amina-winning
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -ev
+          echo abc > /tmp/winning.txt
+
+
+
+Outputs:
+  InstanceIP:
+    Value:
+      !GetAtt Instance.PublicIp
