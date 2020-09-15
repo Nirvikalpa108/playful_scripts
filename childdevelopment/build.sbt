@@ -9,7 +9,7 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "org.xerial" % "sqlite-jdbc" % "3.32.3.2",
       "org.playframework.anorm" %% "anorm" % "2.6.7",
-      "org.scalatest" %% "scalatest" % "3.1.1" % Test
+      "org.scalatest" %% "scalatest" % "3.2.0" % Test
     )
   )
 
