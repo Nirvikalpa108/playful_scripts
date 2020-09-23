@@ -15,9 +15,21 @@ object Hello {
   val parser = Macro.namedParser[Activity]
 
   def main(args: Array[String]): Unit = {
+    // all printlns should live here
+    // only place to read args
+    // eg reading/writing from terminal
     try {
-      val ageInput = args.head.toInt
-      val formattedResults = childDevelopment(ageInput)
+      // take first parameter (Error)
+      val ageInput = args.head
+      // ensure parameter is in correct form to be processed (Error)
+      val validatedAgeInput = validateAgeInput(ageInput)
+      // extractAgeFromInput
+      val ageForDbQuery = extractAgeFromInput(validatedAgeInput)
+      // get results from db (Error)
+      val dbResults = queryAgeDb(ageForDbQuery)
+      // format results
+      val formattedResults = formatActivities(dbResults)
+      // print
       println(formattedResults)
     } catch {
       case NonFatal(error) =>
@@ -25,16 +37,13 @@ object Hello {
     }
   }
 
-  def childDevelopment(ageInput: Int): String = {
-    val age = extractAgeFromInput(ageInput)
-    val results = SQL"SELECT * FROM earlyYearsFoundationStageFramework WHERE age = ${age}".as(parser.*)
-    results.map { activity =>
-      s"${activity.id}, ${activity.age}, ${activity.area}, ${activity.subCat}, ${activity.contents}"
-    }.mkString("\n")
+  def validateAgeInput(age: String): Int = {
+    age.toInt
   }
 
   def extractAgeFromInput(ageInput: Int): Int = {
     ageInput match {
+      case n if n < 0 => throw new RuntimeException("The minimum age parameter is 0 - please try again!")
       case n if n < 8 => 0
       case n if n < 16 => 8
       case n if n < 22 => 16
@@ -44,6 +53,26 @@ object Hello {
       case _ => throw new RuntimeException("The maximum age parameter accepted is 59")
     }
   }
+
+  def queryAgeDb(age: Int): List[Activity] = {
+    ???
+  }
+
+  def formatActivities(results: List[Activity]): String = {
+    ???
+  }
+
+
+
+
+  def childDevelopment(ageInput: Int): String = {
+    val age = extractAgeFromInput(ageInput)
+    val results = SQL"SELECT * FROM earlyYearsFoundationStageFramework WHERE age = ${age}".as(parser.*)
+    results.map { activity =>
+      s"${activity.id}, ${activity.age}, ${activity.area}, ${activity.subCat}, ${activity.contents}"
+    }.mkString("\n")
+  }
+
 
 }
 
