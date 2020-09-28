@@ -1,6 +1,6 @@
 package example
 
-import example.Hello.{extractAgeFromInput, validateAgeInput}
+import example.Hello.{extractAgeFromInput, formatActivities, validateAgeInput}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -26,36 +26,11 @@ class HelloTest extends AnyFreeSpec with Matchers {
     }
   }
 
-  // dont write a test to queryAgeDb
-  // write one for format
-  // then implement the functions
-
-  "errorForIncorrectAgeParameterInput" - {
-    // receive the incorrect user input
-    // output an error message with a helpful prompt for the user
+  "formatActivities" - {
+    "returns string when given List of Activities" in {
+      val input: List[Activity] = List(Activity(23, 59, "test", "test", "test"))
+      val result: String = "23|59|test|test|test"
+      formatActivities(input) shouldEqual result
+    }
   }
-
-  "extractAreaFromInput" - {
-    // take the string and output the correct field in the db
-    // allow for fuzzy matches???
-    // if there is an error, pass onto the error function
-  }
-
-  "errorForIncorrectAreaParameterInput" - {
-    // receive the incorrect user input
-    // output an error message with a helpful prompt for the user
-  }
-
-  "databaseQuery" - {
-    // we are given the correct field to query the db and all errors have been caught
-    // query the database
-    // return results from database
-  }
-
-  "returnResultsToUser" - {
-    // we are given the results from the db
-    // process this
-    // print to STDOUT
-  }
-
 }

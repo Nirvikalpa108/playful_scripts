@@ -1,23 +1,20 @@
 package example
-
 import java.sql.DriverManager
-
 import anorm._
-
 import scala.util.control.NonFatal
 
-// to run programme in sbt, type "run $age"
-// we currently offer the following age parameters (months): 0, 8, 16, 22, 30, 40
+// to run programme:
+//$ /Users/amina_adewusi/code/adam/childdevelopment/
+//$ Sbt
+// "run $age"
 
 object Hello {
   Class.forName("org.sqlite.JDBC")
   implicit val connection = DriverManager.getConnection("jdbc:sqlite:/Users/amina_adewusi/code/adam/childDevelopment.db")
   val parser = Macro.namedParser[Activity]
 
+  // all reading/writing from terminal to live in main eg all printlns
   def main(args: Array[String]): Unit = {
-    // all printlns should live here
-    // only place to read args
-    // eg reading/writing from terminal
     try {
       // take first parameter (Error)
       val ageInput = args.head
@@ -55,25 +52,14 @@ object Hello {
   }
 
   def queryAgeDb(age: Int): List[Activity] = {
-    ???
-  }
+    SQL"SELECT * FROM earlyYearsFoundationStageFramework WHERE age = ${age}".as(parser.*)
+    }
 
   def formatActivities(results: List[Activity]): String = {
-    ???
-  }
-
-
-
-
-  def childDevelopment(ageInput: Int): String = {
-    val age = extractAgeFromInput(ageInput)
-    val results = SQL"SELECT * FROM earlyYearsFoundationStageFramework WHERE age = ${age}".as(parser.*)
     results.map { activity =>
       s"${activity.id}, ${activity.age}, ${activity.area}, ${activity.subCat}, ${activity.contents}"
     }.mkString("\n")
   }
-
-
 }
 
 case class Activity(id: Int, age: Int, area: String, subCat: String, contents: String)
