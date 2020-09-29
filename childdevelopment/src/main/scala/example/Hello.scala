@@ -16,17 +16,14 @@ object Hello {
   // all reading/writing from terminal to live in main eg all printlns
   def main(args: Array[String]): Unit = {
     try {
-      // take first parameter (Error)
-      val ageInput = args.head
-      // ensure parameter is in correct form to be processed (Error)
-      val validatedAgeInput = validateAgeInput(ageInput)
-      // extractAgeFromInput
+      val ageInput = args.head //error
+      // val areaInput = args(1) //error
+      val validatedAgeInput = validateAgeInput(ageInput) //error
+      // val validatedAreaInput = ??? //do we need this?
       val ageForDbQuery = extractAgeFromInput(validatedAgeInput)
-      // get results from db (Error)
-      val dbResults = queryAgeDb(ageForDbQuery)
-      // format results
+      // val areaForDbQuery = extractAreaFromInput(areaInput)
+      val dbResults = queryAgeDb(ageForDbQuery, None) //error
       val formattedResults = formatActivities(dbResults)
-      // print
       println(formattedResults)
     } catch {
       case NonFatal(error) =>
@@ -34,9 +31,7 @@ object Hello {
     }
   }
 
-  def validateAgeInput(age: String): Int = {
-    age.toInt
-  }
+  def validateAgeInput(age: String): Int = age.toInt
 
   def extractAgeFromInput(ageInput: Int): Int = {
     ageInput match {
@@ -50,8 +45,17 @@ object Hello {
       case _ => throw new RuntimeException("The maximum age parameter accepted is 59")
     }
   }
+  
+  // decide if I want to tackle this fuzzy match problem or not
+  def extractAreaFromInput(area: String): String = {
+    area match {
+      case "PSE" => "PSE"
+      case "Communication" => "Communication and Language"
+      case "Arts" => "Expressive Arts and Design"
+    }
+  }
 
-  def queryAgeDb(age: Int): List[Activity] = {
+  def queryAgeDb(age: Int, area: Option[String]): List[Activity] = {
     SQL"SELECT * FROM earlyYearsFoundationStageFramework WHERE age = ${age}".as(parser.*)
     }
 
