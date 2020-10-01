@@ -1,0 +1,3 @@
+GET     /                           controllers.HomeController.index
+
+GET     /win/:area                        controllers.HomeController.win(area: String)
