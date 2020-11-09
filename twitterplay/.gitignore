@@ -1,8 +1,9 @@
-logs
 target
-/.idea
-/.idea_modules
-/.classpath
-/.project
-/.settings
-/RUNNING_PID
+*.class
+*.iml
+*.ipr
+*.iws
+.idea/
+.bsp/
+out
+.DS_Store

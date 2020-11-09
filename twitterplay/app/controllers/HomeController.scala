@@ -1,7 +1,7 @@
 package controllers
 import data.Database
 import javax.inject._
-import models.{Tweet, Response, User}
+import models.{Tweet, TweetRaw, TweetsResponse, User, UserWithTweets, UsersResponse}
 import play.api._
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc._
@@ -10,7 +10,7 @@ import play.api.mvc._
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
   implicit val userWrites = Json.writes[User]
   implicit val tweetWrites = Json.writes[Tweet]
-  implicit val tweetsWrites = Json.writes[Response]
+  implicit val tweetsWrites = Json.writes[TweetsResponse]
 
   def index() = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index())
@@ -29,6 +29,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
 ////       |}
 ////       |}
 ////       |""".stripMargin
+
 ////    Json.obj(
 ////      "tweet" -> tweet.tweet,
 ////      "timestamp" -> tweet.timestamp,
@@ -43,7 +44,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   //  def tweetsAsJson(tweets: Tweet): JsValue = Json.toJson(tweets)
 
   def tweets() = Action {
-    Ok(Json.toJson(Response(Database.tweets)))
+    Ok(Json.toJson(TweetsResponse(Database.tweets)))
 
     //    val json =
     //      s"""
@@ -60,4 +61,46 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     //      )
     //    )
   }
+
+  // string interpolation for inner-inner frame - UNUSED CURRENTLY
+  // not sure how to loop over tweets per user -
+  // maybe different modelling of the data in the db?
+  def tweet(tweet: TweetRaw): String = {
+    s"""{ "text": ${tweet.text},
+          "timestamp: ${tweet.timestamp}
+        }""".stripMargin
+  }
+
+  // string interpolation for inner frame
+  def user(response: UserWithTweets): String = {
+    s"""
+      |{ "handle": ${response.handle},
+      |  "name": ${response.name},
+      |  "avatar": ${response.avatar},
+      |  "tweets": [
+      |    "text": ${response.tweets.text},
+      |    "timestamp": ${response.tweets.timestamp}
+      |  ]
+      | }
+      |""".stripMargin
+  }
+
+  // map over userWithTweets from the db and run it through the UsersAsJson function string
+  val usersList = Database.userWithTweets.map(user).mkString(",")
+
+  // this val is the string outer frame of the users array
+  // it will take in a string interpolation mapped over
+  // userWithTweets List from the Database
+  val json =
+    s"""
+      |{ "users" : [
+      |   ${usersList}
+      | ]
+      |}
+      |""".stripMargin
+
+  def users() = Action {
+    Ok(json)
+  }
+
 }
