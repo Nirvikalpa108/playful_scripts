@@ -74,12 +74,12 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   // string interpolation for inner frame
   def user(response: UserWithTweets): String = {
     s"""
-      |{ "handle": ${response.handle},
-      |  "name": ${response.name},
-      |  "avatar": ${response.avatar},
+      |{ "handle": "${response.handle}",
+      |  "name": "${response.name}",
+      |  "avatar": "${response.avatar}",
       |  "tweets": [
-      |    "text": ${response.tweets.text},
-      |    "timestamp": ${response.tweets.timestamp}
+      |    {"text": "${response.tweets.text}",
+      |    "timestamp": "${response.tweets.timestamp}"}
       |  ]
       | }
       |""".stripMargin
