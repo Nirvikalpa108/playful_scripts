@@ -1,9 +1,8 @@
 package controllers
 import data.Database
 import javax.inject._
-import models.{Tweet, TweetRaw, TweetsResponse, User, UserWithTweets, UsersResponse}
-import play.api._
-import play.api.libs.json.{JsValue, Json}
+import models._
+import play.api.libs.json.Json
 import play.api.mvc._
 
 @Singleton
@@ -11,6 +10,9 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   implicit val userWrites = Json.writes[User]
   implicit val tweetWrites = Json.writes[Tweet]
   implicit val tweetsWrites = Json.writes[TweetsResponse]
+  implicit val tweetRawWrites = Json.writes[TweetRaw]
+  implicit val userWithTweetsWrites = Json.writes[UserWithTweets]
+  implicit val usersResponseWrites = Json.writes[UsersResponse]
 
   def index() = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index())
@@ -119,8 +121,13 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
       |}
       |""".stripMargin
 
+  // this routes uses string interpolation to produce Json
   def users() = Action {
     Ok(json)
   }
 
+  // this route uses the json parsing library
+  def usersJson() = Action {
+    Ok(Json.toJson(UsersResponse(Database.userWithTweets)))
+  }
 }

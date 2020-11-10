@@ -10,5 +10,7 @@ GET     /tweets                      controllers.HomeController.tweets
 
 GET     /users                      controllers.HomeController.users
 
+GET     /usersJson                      controllers.HomeController.usersJson
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
