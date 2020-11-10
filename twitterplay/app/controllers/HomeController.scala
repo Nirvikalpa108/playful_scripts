@@ -62,35 +62,55 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     //    )
   }
 
-  // string interpolation for inner-inner frame - UNUSED CURRENTLY
-  // not sure how to loop over tweets per user -
-  // maybe different modelling of the data in the db?
+//  def userTakeTwo(response: UserWithTweets): String = {
+//    s"""
+//       |{ "handle": "${response.handle}",
+//       |  "name": "${response.name}",
+//       |  "avatar": "${response.avatar}",
+//       |  "tweets": [
+//       |     { "text": "${response.tweets.map(_.text)}",
+//       |       "timestamp": "${response.tweets.map(_.timestamp)}" }
+//       |  ]
+//       | }
+//       |""".stripMargin
+//  }
+
+//  def user(response: UserWithTweets): String = {
+//    s"""
+//      |{ "handle": "${response.handle}",
+//      |  "name": "${response.name}",
+//      |  "avatar": "${response.avatar}",
+//      |  "tweets": [
+//      |     ${tweetsList}
+//      |  ]
+//      | }
+//      |""".stripMargin
+//  }
+
+//  val tweetsList = Database.userWithTweets.map(_.tweets.map(tweet)).mkString(",")
+
+
   def tweet(tweet: TweetRaw): String = {
-    s"""{ "text": ${tweet.text},
-          "timestamp: ${tweet.timestamp}
-        }""".stripMargin
+    s"""
+       |{ "text": "${tweet.text}",
+       |  "timestamp": "${tweet.timestamp}" }
+       |""".stripMargin
   }
 
-  // string interpolation for inner frame
   def user(response: UserWithTweets): String = {
     s"""
-      |{ "handle": "${response.handle}",
-      |  "name": "${response.name}",
-      |  "avatar": "${response.avatar}",
-      |  "tweets": [
-      |    {"text": "${response.tweets.text}",
-      |    "timestamp": "${response.tweets.timestamp}"}
-      |  ]
-      | }
-      |""".stripMargin
+       |{ "handle": "${response.handle}",
+       |  "name": "${response.name}",
+       |  "avatar": "${response.avatar}",
+       |  "tweets": [
+       |     ${response.tweets.map(tweet).mkString(",")}
+       |  ]
+       | }
+       |""".stripMargin
   }
 
-  // map over userWithTweets from the db and run it through the UsersAsJson function string
   val usersList = Database.userWithTweets.map(user).mkString(",")
 
-  // this val is the string outer frame of the users array
-  // it will take in a string interpolation mapped over
-  // userWithTweets List from the Database
   val json =
     s"""
       |{ "users" : [

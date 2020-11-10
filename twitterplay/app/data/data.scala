@@ -18,13 +18,26 @@ object Database {
     Tweet("I'm still winning", LocalDate.now, user3),
   )
 
+
+  val tweet1 = TweetRaw("a", LocalDate.now)
+  val tweet2 = TweetRaw("b", LocalDate.now)
+  val tweet3 = TweetRaw("c", LocalDate.now)
+  val tweet4 = TweetRaw("d", LocalDate.now)
+  val tweet5 = TweetRaw("e", LocalDate.now)
+  val tweet6 = TweetRaw("f", LocalDate.now)
+  val tweet7 = TweetRaw("g", LocalDate.now)
   val rawTweets: List[TweetRaw] = List(
-    TweetRaw("a", LocalDate.now),
-    TweetRaw("b", LocalDate.now)
+    tweet1,
+    tweet2,
+    tweet3,
+    tweet4,
+    tweet5,
+    tweet6,
+    tweet7,
     )
 
   val userWithTweets: List[UserWithTweets] = List(
-    UserWithTweets("a_adewusi", "Amina Adewusi", Some("url"), rawTweets(0)),
-    UserWithTweets("adamnfish", "Adam Fisher", Some("url"), rawTweets(1))
+    UserWithTweets("a_adewusi", "Amina Adewusi", Some("url"), List(tweet1, tweet2, tweet3)),
+    UserWithTweets("adamnfish", "Adam Fisher", Some("url"), List(tweet4, tweet5, tweet6, tweet7))
   )
 }

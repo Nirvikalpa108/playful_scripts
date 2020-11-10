@@ -12,7 +12,7 @@ case class TweetsResponse(tweets: List[Tweet])
 
 case class TweetRaw(text: String, timestamp: LocalDate)
 
-case class UserWithTweets(handle: String, name: String, avatar: Option[String], tweets: TweetRaw)
+case class UserWithTweets(handle: String, name: String, avatar: Option[String], tweets: List[TweetRaw])
 
 case class UsersResponse(users: List[UserWithTweets])
 
