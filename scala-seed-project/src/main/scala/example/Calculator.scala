@@ -8,7 +8,7 @@ object Calculator {
       val operator = args(1)
       val firstDigit = args.head.toInt
       val secondDigit = args(2).toInt
-      val result: Int = matchIt(operator, firstDigit, secondDigit)
+      val result = matchIt(operator, firstDigit, secondDigit)
       println(result)
     } catch {
       case NonFatal(t) => 
@@ -21,10 +21,10 @@ object Calculator {
     else firstDigit - secondDigit
   }
 
-  def matchIt(operator: String, firstDigit: Int, secondDigit: Int): Int = { operator match {
+  def matchIt(operator: String, firstDigit: Int, secondDigit: Int): Float = { operator match {
       case "+" => firstDigit + secondDigit
       case "-" => firstDigit - secondDigit
-      case "/" => firstDigit / secondDigit
+      case "/" => firstDigit / secondDigit.toFloat
       case "*" => firstDigit * secondDigit
     }
   }
