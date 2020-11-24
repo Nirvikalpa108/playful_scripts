@@ -6,8 +6,8 @@ object Calculator {
   def main(args: Array[String]): Unit = {
     try {
       val operator = args(1)
-      val firstDigit = args.head.toInt
-      val secondDigit = args(2).toInt
+      val firstDigit = args.head.toFloat
+      val secondDigit = args(2).toFloat
       val result = matchIt(operator, firstDigit, secondDigit)
       println(result)
     } catch {
@@ -21,10 +21,10 @@ object Calculator {
     else firstDigit - secondDigit
   }
 
-  def matchIt(operator: String, firstDigit: Int, secondDigit: Int): Float = { operator match {
+  def matchIt(operator: String, firstDigit: Float, secondDigit: Float): Float = { operator match {
       case "+" => firstDigit + secondDigit
       case "-" => firstDigit - secondDigit
-      case "/" => firstDigit / secondDigit.toFloat
+      case "/" => firstDigit / secondDigit
       case "*" => firstDigit * secondDigit
     }
   }
